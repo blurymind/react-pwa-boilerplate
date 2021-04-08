@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
 const App = () =>{
-
   useEffect(()=>{
     // PWA install promotion banner on start
     let deferredPrompt:any = null;
@@ -32,6 +31,7 @@ const App = () =>{
       });
     })
   }, [])
+
   return (
     <div className="App">
       <header className="App-header">
