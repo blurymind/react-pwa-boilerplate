@@ -1,9 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import DndArea from "./packages/dragable";
 
+const mockCards = [
+  {
+    id: 1,
+    children: "Write a cool JS library",
+  },
+  {
+    id: 2,
+    tooltip: "Make it generic enough",
+    children: <button onClick={() => alert("yay")}>Test</button>,
+  },
+  {
+    id: 3,
+    children: "Write README",
+  },
+  {
+    id: 4,
+    children: "Create some examples",
+  },
+  {
+    id: 5,
+    tooltip:
+      "Spam in Twitter and IRC to promote it (note that this element is taller than the others)",
+  },
+  {
+    id: 6,
+    children: "???",
+  },
+  {
+    id: 7,
+    children: "PROFIT",
+  },
+];
+
 const App = () => {
+  const [cards, setCards] = useState(mockCards);
+
   useEffect(() => {
     // PWA install promotion banner on start
     let deferredPrompt: any = null;
@@ -50,7 +85,7 @@ const App = () => {
         </a>
         <br />
         <button id="addBtn">Add pwa</button>
-        <DndArea />
+        <DndArea cards={cards} setCards={setCards} />
       </header>
     </div>
   );

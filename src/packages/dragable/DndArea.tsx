@@ -1,56 +1,32 @@
-import { FC, useState, useCallback } from "react";
+import { FC, useCallback } from "react";
 import { Card } from "./Card";
 import update from "immutability-helper";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-const style = {
-  width: 400,
+import { CardType } from "./types";
+
+const defaultStyle = {
+  display: "flex",
+  flex: 1,
+  width: "100%",
+  height: "100%",
 };
 
-export interface Item {
-  id: number;
-  text: string;
+export interface Props {
+  isHorizontal?: boolean;
+  cards?: Array<CardType>;
+  setCards: (p: any) => void;
+  style?: any;
 }
 
-export interface ContainerState {
-  cards: Item[];
-}
-
-export const Container: FC = () => {
+export const Container: FC<Props> = ({
+  cards = [],
+  setCards,
+  style = defaultStyle,
+  isHorizontal,
+}: Props) => {
   {
-    const [cards, setCards] = useState([
-      {
-        id: 1,
-        text: "Write a cool JS library",
-      },
-      {
-        id: 2,
-        text: "Make it generic enough",
-      },
-      {
-        id: 3,
-        text: "Write README",
-      },
-      {
-        id: 4,
-        text: "Create some examples",
-      },
-      {
-        id: 5,
-        text:
-          "Spam in Twitter and IRC to promote it (note that this element is taller than the others)",
-      },
-      {
-        id: 6,
-        text: "???",
-      },
-      {
-        id: 7,
-        text: "PROFIT",
-      },
-    ]);
-
     const moveCard = useCallback(
       (dragIndex: number, hoverIndex: number) => {
         const dragCard = cards[dragIndex];
@@ -66,30 +42,47 @@ export const Container: FC = () => {
       [cards]
     );
 
-    const renderCard = (card: { id: number; text: string }, index: number) => {
+    const renderCard = (card: CardType, index: number) => {
       return (
         <Card
           key={card.id}
           index={index}
           id={card.id}
-          text={card.text}
+          tooltip={card.tooltip}
           moveCard={moveCard}
-        />
+          style={card.style}
+        >
+          {card.children}
+        </Card>
       );
     };
 
     return (
       <>
-        <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
+        <div
+          style={{ ...style, flexDirection: isHorizontal ? "row" : "column" }}
+        >
+          {cards.map((card, i) => renderCard(card, i))}
+        </div>
       </>
     );
   }
 };
 
-export const DndArea = () => {
+export const DndArea = ({
+  cards = [],
+  setCards,
+  style,
+  isHorizontal,
+}: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <Container />
+      <Container
+        cards={cards}
+        setCards={setCards}
+        style={style}
+        isHorizontal={isHorizontal}
+      />
     </DndProvider>
   );
 };
