@@ -82,7 +82,7 @@ typings/
 .nuxt
 dist
 
-.idea
+build
 
 # Gatsby files
 .cache/
@@ -104,3 +104,4 @@ dist
 
 # TernJS port file
 .tern-port
+
