@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "@images/logo.svg";
+import logo from "./logo.svg";
 import DragArea from "@components/dragable";
 
 const mockCards = [
