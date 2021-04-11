@@ -3,6 +3,7 @@ import { Card } from "./Card";
 import update from "immutability-helper";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 
 import { CardType } from "./types";
 
@@ -76,7 +77,7 @@ export const DndArea = ({
   isHorizontal,
 }: Props) => {
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
       <Container
         cards={cards}
         setCards={setCards}

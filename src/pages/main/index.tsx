@@ -1,42 +1,54 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import DragArea from "@components/dragable";
+import DndSheet from "@components/dnd-sheet";
 
-const mockCards = [
+const mockData = [
   {
-    id: 1,
-    children: "Write a cool JS library",
+    id: "af3",
+    label: "Incoming leads",
+    items: [
+      { id: "af31", label: "Item 3.1 - Auguri" },
+      {
+        id: "af32",
+        label:
+          "Item 3.2 - Sed tellus risus, tincidunt ac fringilla sed, rho vel elit. Fusce et mauris lobortis",
+      },
+      {
+        id: "af33",
+        label:
+          "Item 3.3 - Praesent nec massa vel ante porta elementum. Nulla urna risus, ullamcorper a nibh sodales, laoreet ullamcorper arcu. Nulla vel ante neque. Ut nunc tortor",
+      },
+      { id: "af34", label: "Item 3.4 - Aliquam hendrerit quis nibh" },
+    ],
+    tint: 1,
   },
   {
-    id: 2,
-    tooltip: "Make it generic enough",
-    children: <button onClick={() => alert("yay")}>Test</button>,
+    id: "af1",
+    label: "Closing leads",
+    items: [
+      { id: "af11", label: "Item 1.1 - Sed sit amet ornare nisi." },
+      {
+        id: "af12",
+        label:
+          "Item 1.2 - Donec aliquet commodo justo, in faucibus libero efficitur ut. Nam ut lacus in dui sollicitudin sollicitudin.",
+      },
+    ],
+    tint: 2,
   },
   {
-    id: 3,
-    children: "Write README",
-  },
-  {
-    id: 4,
-    children: "Create some examples",
-  },
-  {
-    id: 5,
-    tooltip:
-      "Spam in Twitter and IRC to promote it (note that this element is taller than the others)",
-  },
-  {
-    id: 6,
-    children: "???",
-  },
-  {
-    id: 7,
-    children: "PROFIT",
+    id: "af2",
+    label: "On hold",
+    items: [
+      { id: "af21", label: "Item 2.1 - Vivamus eget ante tempor" },
+      { id: "af22", label: "Item 2.2 - Pellentesque euismod" },
+    ],
+    tint: 3,
   },
 ];
 
 const Main = () => {
-  const [cards, setCards] = useState(mockCards);
+  const [cards, setCards] = useState(mockData);
 
   useEffect(() => {
     // PWA install promotion banner on start
@@ -84,7 +96,7 @@ const Main = () => {
         </a>
         <br />
         <button id="addBtn">Add pwa</button>
-        <DragArea cards={cards} setCards={setCards} />
+        <DndSheet />
       </header>
     </div>
   );
