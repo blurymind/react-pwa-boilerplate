@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
-import DragArea from "@components/dragable";
 import DndSheet from "@components/dnd-sheet";
 
-const mockData = [
+const DATA = [
   {
     id: "af3",
     label: "Incoming leads",
@@ -46,9 +45,8 @@ const mockData = [
     tint: 3,
   },
 ];
-
 const Main = () => {
-  const [cards, setCards] = useState(mockData);
+  const [items, setItems] = useState(DATA);
 
   useEffect(() => {
     // PWA install promotion banner on start
@@ -96,7 +94,7 @@ const Main = () => {
         </a>
         <br />
         <button id="addBtn">Add pwa</button>
-        <DndSheet />
+        <DndSheet items={items} setItems={setItems} className="px-4" />
       </header>
     </div>
   );

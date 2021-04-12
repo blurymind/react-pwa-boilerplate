@@ -1,60 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const DATA = [
-  {
-    id: "af3",
-    label: "Incoming leads",
-    items: [
-      { id: "af31", label: "Item 3.1 - Auguri" },
-      {
-        id: "af32",
-        label:
-          "Item 3.2 - Sed tellus risus, tincidunt ac fringilla sed, rho vel elit. Fusce et mauris lobortis",
-      },
-      {
-        id: "af33",
-        label:
-          "Item 3.3 - Praesent nec massa vel ante porta elementum. Nulla urna risus, ullamcorper a nibh sodales, laoreet ullamcorper arcu. Nulla vel ante neque. Ut nunc tortor",
-      },
-      { id: "af34", label: "Item 3.4 - Aliquam hendrerit quis nibh" },
-    ],
-    tint: 1,
-  },
-  {
-    id: "af1",
-    label: "Closing leads",
-    items: [
-      { id: "af11", label: "Item 1.1 - Sed sit amet ornare nisi." },
-      {
-        id: "af12",
-        label:
-          "Item 1.2 - Donec aliquet commodo justo, in faucibus libero efficitur ut. Nam ut lacus in dui sollicitudin sollicitudin.",
-      },
-    ],
-    tint: 2,
-  },
-  {
-    id: "af2",
-    label: "On hold",
-    items: [
-      { id: "af21", label: "Item 2.1 - Vivamus eget ante tempor" },
-      { id: "af22", label: "Item 2.2 - Pellentesque euismod" },
-    ],
-    tint: 3,
-  },
-];
-
-const DndSheet = () => {
-  const [items, setItems] = useState([]);
+const DndSheet = ({ items, setItems, className }) => {
   const [groups, setGroups] = useState({});
 
-  useEffect(() => {
-    // Mock an API call.
-    buildAndSave(DATA);
-  }, []);
-
-  function buildAndSave(items) {
+  const buildAndSave = (items) => {
     const groups = {};
     for (let i = 0; i < Object.keys(items).length; ++i) {
       const currentGroup = items[i];
@@ -63,10 +13,14 @@ const DndSheet = () => {
 
     // Set the data.
     setItems(items);
-
     // Makes the groups searchable via their id.
     setGroups(groups);
-  }
+  };
+
+  useEffect(() => {
+    // Mock an API call.
+    buildAndSave(items);
+  }, []);
 
   return (
     <DragDropContext
@@ -124,7 +78,11 @@ const DndSheet = () => {
     >
       <Droppable droppableId="ROOT" type="group">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={className}
+          >
             {items.map((item, index) => (
               <Draggable draggableId={item.id} key={item.id} index={index}>
                 {(provided) => (
@@ -154,22 +112,22 @@ const DroppableList = ({ id, items, label, tint }) => {
           <div className={`holder holder--tint-${tint}`}>
             <div
               // className="holder__title"
-              className="bg-gray-500"
+              className="bg-gray-500 rounded-t-md"
             >
               {label}
             </div>
             <div
               // className="holder__content"
-              className="bg-gray-500"
+              className="bg-gray-500 rounded-b-md"
             >
-              <ul className="list grid grid-cols-1 divide-y divide-yellow-500">
+              <ul className="list">
                 {items.map((item, index) => (
                   <li className="list__item" key={item.id}>
                     <Draggable draggableId={item.id} index={index}>
                       {(provided) => (
                         <div
                           // className="card"
-                          className="bg-blue-400"
+                          className="bg-blue-400 rounded-md mb-1"
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
