@@ -7,7 +7,11 @@ const DATA = [
     id: "af3",
     label: "Incoming leads",
     items: [
-      { id: "af31", label: "Item 3.1 - Auguri" },
+      {
+        id: "af31",
+        label: "Item 3.1 - Auguri",
+        className: "bg-red-500 hover:bg-red-700 rounded-md mb-1 mx-1",
+      },
       {
         id: "af32",
         label:

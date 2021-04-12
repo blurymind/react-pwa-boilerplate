@@ -110,24 +110,17 @@ const DroppableList = ({ id, items, label, tint }) => {
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           <div className={`holder holder--tint-${tint}`}>
-            <div
-              // className="holder__title"
-              className="bg-gray-500 rounded-t-md"
-            >
-              {label}
-            </div>
-            <div
-              // className="holder__content"
-              className="bg-gray-500 rounded-b-md"
-            >
+            <div className="bg-gray-500 rounded-t-md">{label}</div>
+            <div className="bg-gray-500 rounded-b-md">
               <ul className="list">
                 {items.map((item, index) => (
-                  <li className="list__item" key={item.id}>
+                  <li className={item.className} key={item.id}>
                     <Draggable draggableId={item.id} index={index}>
                       {(provided) => (
                         <div
-                          // className="card"
-                          className="bg-blue-400 rounded-md mb-1"
+                          className={
+                            item.className || "bg-blue-400 rounded-md mb-1 mx-1"
+                          }
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
