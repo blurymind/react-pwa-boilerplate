@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
-import DndSheet from "@components/dnd-sheet";
+import DndSheet, { GroupType } from "@components/dnd-sheet";
 
 const DATA = [
   {
@@ -50,7 +50,7 @@ const DATA = [
   },
 ];
 const Main = () => {
-  const [items, setItems] = useState(DATA);
+  const [items, setItems] = useState<Array<GroupType>>(DATA);
 
   useEffect(() => {
     // PWA install promotion banner on start

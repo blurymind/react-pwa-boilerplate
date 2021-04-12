@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const DndSheet = ({ items, setItems, className }) => {
-  const [groups, setGroups] = useState({});
+export type ItemType = { id: string; className: string; tint: any };
+export type GroupType = { items: Array<any>; id: string; label: string };
+export interface Props {
+  items: Array<GroupType>;
+  setItems: (p: Array<GroupType>) => void;
+  className: string;
+}
 
-  const buildAndSave = (items) => {
-    const groups = {};
+const DndSheet = ({ items, setItems, className }: Props) => {
+  const [groups, setGroups] = useState<any>({});
+
+  const buildAndSave = (items: Array<GroupType>) => {
+    const groups: any = {};
     for (let i = 0; i < Object.keys(items).length; ++i) {
       const currentGroup = items[i];
       groups[currentGroup.id] = i;
     }
-
     // Set the data.
     setItems(items);
     // Makes the groups searchable via their id.
@@ -104,12 +111,12 @@ const DndSheet = ({ items, setItems, className }) => {
   );
 };
 
-const DroppableList = ({ id, items, label, tint }) => {
+const DroppableList = ({ id, items, label }: GroupType) => {
   return (
     <Droppable droppableId={id}>
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
-          <div className={`holder holder--tint-${tint}`}>
+          <div>
             <div className="bg-gray-500 rounded-t-md">{label}</div>
             <div className="bg-gray-500 rounded-b-md">
               <ul className="list">
