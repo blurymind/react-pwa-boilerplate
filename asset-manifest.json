@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/react-pwa-boilerplate/static/css/main.1aee23db.chunk.css",
-    "main.js": "/react-pwa-boilerplate/static/js/main.ba8c80d0.chunk.js",
-    "main.js.map": "/react-pwa-boilerplate/static/js/main.ba8c80d0.chunk.js.map",
+    "main.css": "/react-pwa-boilerplate/static/css/main.b171b66f.chunk.css",
+    "main.js": "/react-pwa-boilerplate/static/js/main.4d36250e.chunk.js",
+    "main.js.map": "/react-pwa-boilerplate/static/js/main.4d36250e.chunk.js.map",
     "runtime-main.js": "/react-pwa-boilerplate/static/js/runtime-main.e368dea3.js",
     "runtime-main.js.map": "/react-pwa-boilerplate/static/js/runtime-main.e368dea3.js.map",
     "static/js/2.5c63a696.chunk.js": "/react-pwa-boilerplate/static/js/2.5c63a696.chunk.js",
@@ -12,14 +12,14 @@
     "index.html": "/react-pwa-boilerplate/index.html",
     "service-worker.js": "/react-pwa-boilerplate/service-worker.js",
     "service-worker.js.map": "/react-pwa-boilerplate/service-worker.js.map",
-    "static/css/main.1aee23db.chunk.css.map": "/react-pwa-boilerplate/static/css/main.1aee23db.chunk.css.map",
+    "static/css/main.b171b66f.chunk.css.map": "/react-pwa-boilerplate/static/css/main.b171b66f.chunk.css.map",
     "static/js/2.5c63a696.chunk.js.LICENSE.txt": "/react-pwa-boilerplate/static/js/2.5c63a696.chunk.js.LICENSE.txt",
     "static/media/logo.103b5fa1.svg": "/react-pwa-boilerplate/static/media/logo.103b5fa1.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.e368dea3.js",
     "static/js/2.5c63a696.chunk.js",
-    "static/css/main.1aee23db.chunk.css",
-    "static/js/main.ba8c80d0.chunk.js"
+    "static/css/main.b171b66f.chunk.css",
+    "static/js/main.4d36250e.chunk.js"
   ]
 }
