@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import DndSheet, { GroupType } from "@components/dnd-sheet";
+import {
+  initiatePwaButton,
+  requestFileAccess,
+  getNewFileHandle,
+  readFile,
+  writeFile,
+} from "./utils";
 
 const DATA = [
   {
@@ -49,44 +56,50 @@ const DATA = [
     tint: 3,
   },
 ];
+
+//https://web.dev/file-system-access/
 const Main = () => {
   const [items, setItems] = useState<Array<GroupType>>(DATA);
+  const editedFileRef = useRef<any>(null);
 
   useEffect(() => {
-    // PWA install promotion banner on start
-    let deferredPrompt: any = null;
-    const addBtn: any = document.getElementById("addBtn");
-    window.addEventListener("beforeinstallprompt", (e: any) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      deferredPrompt = e;
-      // Update UI to notify the user they can add to home screen
-      addBtn.style.display = "block";
-
-      addBtn.addEventListener("click", () => {
-        // hide our user interface that shows our A2HS button
-        addBtn.style.display = "none";
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult: any) => {
-          if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the A2HS prompt");
-            addBtn.style.display = "none";
-          } else {
-            console.log("User dismissed the A2HS prompt");
-          }
-          deferredPrompt = null;
-        });
-      });
-    });
+    initiatePwaButton("addBtn");
   }, []);
 
+  const onSave = async () => {
+    // if file handler is not there, request path,
+    // if file handler is there, overwrite file that it is hooked to
+    if (!!editedFileRef.current) {
+      await editedFileRef.current.write(JSON.stringify(items));
+      // Close the file and write the contents to disk.
+      await editedFileRef.current.close(); //fails
+      console.log("overwrote", editedFileRef.current);
+    } else {
+      const fileHandle = await getNewFileHandle();
+      const writable = await fileHandle.createWritable();
+      editedFileRef.current = writable;
+      // Write the contents of the file to the stream.
+      console.log(writable);
+      await writable.write(JSON.stringify(items));
+      // Close the file and write the contents to disk.
+      await writable.close();
+      // writeFile(editedFileRef.current, JSON.stringify(items));
+      console.log("made new file", editedFileRef.current);
+    }
+  };
+
+  const onOpen = () => {
+    editedFileRef.current = getNewFileHandle();
+    console.log(readFile(editedFileRef.current));
+  };
+
   return (
-    <div className="App">
+    <div className="Demo App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p className="text-red-500">
-          Edit <code>src/App.tsx</code> and save to reload.
+          Edit <code>src/App.tsx</code> and save to reload. This demos a project
+          structure with file system access
         </p>
         <a
           className="App-link"
@@ -97,7 +110,23 @@ const Main = () => {
           Learn React
         </a>
         <br />
-        <button id="addBtn">Add pwa</button>
+        <button id="addBtn" className="bg-blue-400 rounded-md p-1 mb-3">
+          Install pwa
+        </button>
+        <button
+          id="openBtn"
+          onClick={onOpen}
+          className="bg-red-400 rounded-md p-1 mb-3"
+        >
+          Open
+        </button>
+        <button
+          id="saveBtn"
+          className="bg-red-400 rounded-md p-1 mb-3"
+          onClick={onSave}
+        >
+          Save
+        </button>
         <DndSheet items={items} setItems={setItems} className="px-4" />
       </header>
     </div>
