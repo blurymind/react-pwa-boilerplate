@@ -120,7 +120,7 @@ const DroppableList = ({ id, items, label }: GroupType) => {
             <div className="bg-gray-500 rounded-t-md">{label}</div>
             <div className="bg-gray-500 rounded-b-md">
               <ul className="list">
-                {items.map((item, index) => (
+                {items.filter(Boolean).map((item, index) => (
                   <li className={item.className} key={item.id}>
                     <Draggable draggableId={item.id} index={index}>
                       {(provided) => (

@@ -6,7 +6,6 @@ import {
   getNewFileHandle,
   readFile,
   writeFile,
-  verifyPermission,
   getFileHandle,
 } from "./utils";
 
