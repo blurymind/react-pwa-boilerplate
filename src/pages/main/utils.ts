@@ -1,5 +1,3 @@
-import React from "react";
-
 export const initiatePwaButton = (buttonId = "addBtn") => {
   // PWA install promotion banner on start
   let deferredPrompt: any = null;
@@ -35,35 +33,6 @@ export const initiatePwaButton = (buttonId = "addBtn") => {
 
 // https://github.com/GoogleChromeLabs/text-editor/blob/main/src/inline-scripts/fs-helpers.js
 // Requests continuous read/write access to a file and returns an object to let you write to the file on demand
-export const requestFileAccess = (buttonId = "saveBtn") => {
-  const butOpenFile: any = document.getElementById(buttonId);
-
-  let fileHandle;
-  // https://web.dev/file-system-access/
-  butOpenFile.addEventListener("click", async () => {
-    // Destructure the one-element array.
-    // @ts-ignore
-    [fileHandle] = await window.showOpenFilePicker();
-    // Do something with the file handle.
-  });
-
-  async function getNewFileHandle() {
-    const options = {
-      types: [
-        {
-          description: "Text Files",
-          accept: {
-            "text/plain": [".txt"],
-          },
-        },
-      ],
-    };
-    //@ts-ignore
-    const handle = await window.showSaveFilePicker(options);
-    return handle;
-  }
-};
-
 /**
  * Writes the contents to disk.
  *
@@ -111,14 +80,15 @@ export const getFileHandle = () => {
  * Create a handle to a new (text) file on the local file system.
  * @return {!Promise<FileSystemFileHandle>} Handle to the new file.
  */
-export const getNewFileHandle = () => {
+export const getNewFileHandle = (options = { extension: "txt" }) => {
+  const { extension } = options;
   // For Chrome 86 and later...
   if ("showSaveFilePicker" in window) {
     const opts = {
       types: [
         {
           description: "Text file",
-          accept: { "text/plain": [".txt"] },
+          accept: { "text/plain": [`.${extension}`] },
         },
       ],
     };
@@ -131,7 +101,7 @@ export const getNewFileHandle = () => {
     accepts: [
       {
         description: "Text file",
-        extensions: ["txt"],
+        extensions: [extension],
         mimeTypes: ["text/plain"],
       },
     ],

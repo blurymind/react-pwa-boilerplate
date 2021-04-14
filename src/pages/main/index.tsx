@@ -3,10 +3,11 @@ import logo from "./logo.svg";
 import DndSheet, { GroupType } from "@components/dnd-sheet";
 import {
   initiatePwaButton,
-  requestFileAccess,
   getNewFileHandle,
   readFile,
   writeFile,
+  verifyPermission,
+  getFileHandle,
 } from "./utils";
 
 const DATA = [
@@ -60,37 +61,40 @@ const DATA = [
 //https://web.dev/file-system-access/
 const Main = () => {
   const [items, setItems] = useState<Array<GroupType>>(DATA);
+  const [hasChanges, setHasChanges] = useState(false);
   const editedFileRef = useRef<any>(null);
 
   useEffect(() => {
     initiatePwaButton("addBtn");
   }, []);
 
+  useEffect(() => {
+    if (editedFileRef.current) setHasChanges(true);
+  }, [items, editedFileRef.current]);
+
   const onSave = async () => {
-    // if file handler is not there, request path,
-    // if file handler is there, overwrite file that it is hooked to
-    if (!!editedFileRef.current) {
-      await editedFileRef.current.write(JSON.stringify(items));
-      // Close the file and write the contents to disk.
-      await editedFileRef.current.close(); //fails
-      console.log("overwrote", editedFileRef.current);
-    } else {
-      const fileHandle = await getNewFileHandle();
-      const writable = await fileHandle.createWritable();
-      editedFileRef.current = writable;
-      // Write the contents of the file to the stream.
-      console.log(writable);
-      await writable.write(JSON.stringify(items));
-      // Close the file and write the contents to disk.
-      await writable.close();
-      // writeFile(editedFileRef.current, JSON.stringify(items));
-      console.log("made new file", editedFileRef.current);
+    if (!editedFileRef.current) {
+      //ask about saving a new file
+      editedFileRef.current = await getNewFileHandle({ extension: "json" });
+      console.log("new file", editedFileRef.current?.name);
     }
+    writeFile(editedFileRef.current, JSON.stringify(items));
+    console.log("wrote to", editedFileRef.current);
+    setHasChanges(false);
   };
 
-  const onOpen = () => {
-    editedFileRef.current = getNewFileHandle();
-    console.log(readFile(editedFileRef.current));
+  const onNew = () => {
+    editedFileRef.current = null;
+    onSave();
+  };
+
+  const onOpen = async () => {
+    editedFileRef.current = await getFileHandle();
+    const file = await editedFileRef.current.getFile();
+    const fileContents = await readFile(file);
+    console.log("opened file", fileContents);
+    setItems(JSON.parse(fileContents));
+    setHasChanges(false);
   };
 
   return (
@@ -113,20 +117,29 @@ const Main = () => {
         <button id="addBtn" className="bg-blue-400 rounded-md p-1 mb-3">
           Install pwa
         </button>
-        <button
-          id="openBtn"
-          onClick={onOpen}
-          className="bg-red-400 rounded-md p-1 mb-3"
-        >
-          Open
-        </button>
-        <button
-          id="saveBtn"
-          className="bg-red-400 rounded-md p-1 mb-3"
-          onClick={onSave}
-        >
-          Save
-        </button>
+        <div className="flex-box flex-wrap flex-1">
+          <button
+            onClick={onOpen}
+            className="bg-red-400 rounded-md p-1 mb-3 mx-1"
+          >
+            Open
+          </button>
+          <button
+            className="bg-red-400 rounded-md p-1 mb-3 mx-1"
+            onClick={onSave}
+          >
+            Save {editedFileRef.current?.name} {hasChanges ? "*" : ""}
+          </button>
+          {editedFileRef.current && (
+            <button
+              onClick={onNew}
+              className="bg-red-400 rounded-md p-1 mb-3 mx-1"
+            >
+              New
+            </button>
+          )}
+        </div>
+
         <DndSheet items={items} setItems={setItems} className="px-4" />
       </header>
     </div>
