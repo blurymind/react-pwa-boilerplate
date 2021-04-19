@@ -13,7 +13,7 @@ const Settings = () => {
         <label>Gist token: </label>
         <input
           onChange={(e) => setGistToken(e.target.value)}
-          type="text"
+          type="password"
           value={gistToken}
           className="bg-white flex-1"
         />

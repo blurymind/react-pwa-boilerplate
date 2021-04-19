@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import DndSheet, { GroupType } from "@components/dnd-sheet";
-import useLocalStorage from "@hooks/use-local-storage";
-
+import useLocalStorage, { getLocalStorage } from "@hooks/use-local-storage";
+import { openGist, TryOpenGist, trySaveGist } from "@helpers/gist";
 import {
   initiatePwaButton,
   getNewFileHandle,
   readFile,
   writeFile,
   getFileHandle,
-} from "./utils";
+} from "@helpers/local-fs";
 
 import "../../App.css";
 
@@ -76,14 +76,25 @@ const Main = () => {
   }, [items, editedFileRef.current]);
 
   const onSave = async () => {
-    if (!editedFileRef.current) {
-      //ask about saving a new file
-      editedFileRef.current = await getNewFileHandle({ extension: "json" });
-      console.log("new file", editedFileRef.current?.name);
-    }
-    writeFile(editedFileRef.current, JSON.stringify(items));
-    console.log("wrote to", editedFileRef.current);
+    const gistId = getLocalStorage("gistId");
+    const token = getLocalStorage("gistToken");
+    trySaveGist(
+      gistId,
+      token,
+      editedFileRef.current.name,
+      JSON.stringify(items)
+    );
     setHasChanges(false);
+
+    // from hd - not working on mobile yet boo
+    // if (!editedFileRef.current) {
+    //   //ask about saving a new file
+    //   editedFileRef.current = await getNewFileHandle({ extension: "json" });
+    //   console.log("new file", editedFileRef.current?.name);
+    // }
+    // writeFile(editedFileRef.current, JSON.stringify(items));
+    // console.log("wrote to", editedFileRef.current);
+    // setHasChanges(false);
   };
 
   const onNew = () => {
@@ -92,12 +103,23 @@ const Main = () => {
   };
 
   const onOpen = async () => {
-    editedFileRef.current = await getFileHandle();
-    const file = await editedFileRef.current.getFile();
-    const fileContents = await readFile(file);
-    console.log("opened file", fileContents);
-    setItems(JSON.parse(fileContents));
-    setHasChanges(false);
+    const gistId = getLocalStorage("gistId");
+    const token = getLocalStorage("gistToken");
+    // from gist
+    TryOpenGist(gistId, token, ({ content, fileName }: any) => {
+      console.log("Got this:", content);
+      setItems(JSON.parse(content));
+      editedFileRef.current = { name: fileName };
+      setHasChanges(false);
+    });
+
+    // From local hd - not working on mobile yet- boo
+    // editedFileRef.current = await getFileHandle();
+    // const file = await editedFileRef.current.getFile();
+    // const fileContents = await readFile(file);
+    // console.log("opened file", fileContents);
+    // setItems(JSON.parse(fileContents));
+    // setHasChanges(false);
   };
 
   return (
