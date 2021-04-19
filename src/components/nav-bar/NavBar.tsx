@@ -16,6 +16,9 @@ const NavBar = ({ className }: Props) => {
       <Link className="m4" to="/">
         Home
       </Link>
+      <Link className="m4" to="/settings">
+        Settings
+      </Link>
       <Link className="m4" to="/about">
         <div className="pr-8 md:block hidden">About</div>
         <div className="px-4 cursor-pointer">
