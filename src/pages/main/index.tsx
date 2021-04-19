@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import DndSheet, { GroupType } from "@components/dnd-sheet";
+import useLocalStorage from "@hooks/use-local-storage";
+
 import {
   initiatePwaButton,
   getNewFileHandle,
@@ -8,6 +10,8 @@ import {
   writeFile,
   getFileHandle,
 } from "./utils";
+
+import "../../App.css";
 
 const DATA = [
   {
@@ -59,7 +63,7 @@ const DATA = [
 
 //https://web.dev/file-system-access/
 const Main = () => {
-  const [items, setItems] = useState<Array<GroupType>>(DATA);
+  const [items, setItems] = useLocalStorage("dnd-sheet-data", DATA);
   const [hasChanges, setHasChanges] = useState(false);
   const editedFileRef = useRef<any>(null);
 
@@ -97,21 +101,9 @@ const Main = () => {
   };
 
   return (
-    <div className="Demo App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="text-red-500">
-          Edit <code>src/App.tsx</code> and save to reload. This demos a project
-          structure with file system access
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="bg-gray-700 flex flex-1 flex-col">
+      <header className="flex-1 py-2 flex flex-row">
+        <img src={logo} className="animate-spin h-8" alt="logo" />
         <br />
         <button id="addBtn" className="bg-blue-400 rounded-md p-1 mb-3">
           Install pwa
@@ -138,9 +130,8 @@ const Main = () => {
             </button>
           )}
         </div>
-
-        <DndSheet items={items} setItems={setItems} className="px-4" />
       </header>
+      <DndSheet items={items} setItems={setItems} className="px-4" />
     </div>
   );
 };

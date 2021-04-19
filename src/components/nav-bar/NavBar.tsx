@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 // md:hidden media query
 //https://tailwindcss.com/docs/guides/create-react-app
 //https://heroicons.com/
-const NavBar = () => {
+export interface Props {
+  className?: string;
+}
+
+const NavBar = ({ className }: Props) => {
   return (
-    <nav
-      className="flex justify-between item-center h-16 bg-white text-black relative shadow-sm font-mono"
-      role="navigation"
-    >
+    <nav className={className} role="navigation">
       <Link className="m4" to="/">
         Home
       </Link>

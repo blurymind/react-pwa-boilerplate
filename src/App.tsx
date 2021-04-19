@@ -4,12 +4,10 @@ import NavBar from "@components/nav-bar";
 import Main from "@pages/main";
 import About from "@pages/about";
 
-import "./App.css";
-
 const App = () => {
   return (
     <>
-      <NavBar />
+      <NavBar className="flex justify-between item-center h-16 bg-white text-black relative shadow-sm font-mono" />
       <HashRouter basename={process.env.PUBLIC_URL}>
         <Route
           render={({ location }) => (
