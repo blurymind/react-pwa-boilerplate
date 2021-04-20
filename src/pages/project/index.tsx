@@ -1,14 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import useLocalStorage, { getLocalStorage } from "@hooks/use-local-storage";
-import { TryOpenGist, trySaveGist, trySaveAsGist } from "@helpers/gist";
-import logo from "@pages/main/logo.svg";
 import {
-  initiatePwaButton,
+  TryOpenGist,
+  trySaveAsGist,
+  openGistByName,
+  trySaveGist,
+} from "@helpers/gist";
+import logo from "@images/logo.svg";
+import {
   getNewFileHandle,
   readFile,
   writeFile,
   getFileHandle,
 } from "@helpers/local-fs";
+import { initiatePwaButton } from "@helpers/pwa-tools";
 
 const DATA = [
   {
@@ -58,21 +63,34 @@ const DATA = [
   },
 ];
 
-const Project = () => {
+export interface Props {
+  onChange: (a: any) => void;
+}
+
+const Project = ({ onChange = () => {} }: Props) => {
   const gistId = getLocalStorage("gistId");
   const token = getLocalStorage("gistToken");
   const [items, setItems] = useLocalStorage("dnd-sheet-data", DATA);
   const [hasChanges, setHasChanges] = useLocalStorage("hasChanges", false);
-  const [fileName, setFileName] = useLocalStorage("fileName", "new*");
+  const [fileName, setFileName] = useLocalStorage("fileName", "NewFile");
   const [hostType, setHostType] = useLocalStorage("hostType", null); //null | "gist" | "fs"
+  const [recentFiles, setRecentFiles] = useLocalStorage("recentFiles", []);
   const editedFileRef = useRef<any>(null);
 
   useEffect(() => {
-    initiatePwaButton("addBtn");
+    if (hostType) initiatePwaButton("addBtn");
   }, []);
-  useEffect(() => {
-    if (editedFileRef.current) setHasChanges(true);
-  }, [items, editedFileRef.current]);
+
+  const onSaveToFs = async () => {
+    if (!editedFileRef.current) {
+      //ask about saving a new file
+      editedFileRef.current = await getNewFileHandle({ extension: "json" });
+      console.log("new file", editedFileRef.current?.name);
+    }
+    writeFile(editedFileRef.current, JSON.stringify(items));
+    console.log("wrote to", editedFileRef.current);
+    setHasChanges(false);
+  };
 
   const onSaveAsGist = () => {
     trySaveAsGist({
@@ -82,36 +100,24 @@ const Project = () => {
       setFileName,
       data: JSON.stringify(items),
     });
-    // trySaveGist();
-    setHasChanges(false);
     setHostType("gist");
+    setHasChanges(false);
   };
 
-  // todo: implement save as + guess type being used
   const onSave = async () => {
     if (hostType === "gist") {
-      onSaveAsGist();
-      // const gistId = getLocalStorage("gistId");
-      // const token = getLocalStorage("gistToken");
-      // trySaveGist(gistId, token, fileName, JSON.stringify(items));
-      // setHasChanges(false);
-      // setHostType("gist");
+      trySaveGist(gistId, token, fileName, JSON.stringify(items));
+      setHostType("gist");
+      setHasChanges(false);
+      onChange({
+        fileName,
+        hasChanges: false,
+        hostType,
+      });
     } else {
       // from hd - not working on mobile yet boo
-      if (!editedFileRef.current) {
-        //ask about saving a new file
-        editedFileRef.current = await getNewFileHandle({ extension: "json" });
-        console.log("new file", editedFileRef.current?.name);
-      }
-      writeFile(editedFileRef.current, JSON.stringify(items));
-      console.log("wrote to", editedFileRef.current);
-      setHasChanges(false);
+      onSaveToFs();
     }
-  };
-
-  const onNew = () => {
-    editedFileRef.current = null;
-    // onSave();
   };
 
   const onOpenGist = async () => {
@@ -128,7 +134,7 @@ const Project = () => {
     setHostType("gist");
   };
 
-  const onOpen = async () => {
+  const onOpenLocal = async () => {
     // From local hd - not working on mobile yet- boo
     editedFileRef.current = await getFileHandle();
     const file = await editedFileRef.current.getFile();
@@ -139,9 +145,40 @@ const Project = () => {
     setHostType("fs");
   };
 
+  useEffect(() => {
+    if (!hostType) return;
+    if (
+      recentFiles &&
+      !recentFiles.find(
+        (file: any) => file.fileName === fileName && file.hostType === hostType
+      )
+    )
+      setRecentFiles([...recentFiles, { fileName, hostType }]);
+  }, [items, hostType, fileName]);
+
+  const onOpen = (openedFileName: string, fileHostType: string) => {
+    if (openedFileName === fileName && hostType === fileHostType) return;
+
+    if (fileHostType === "gist") {
+      openGistByName(gistId, token, openedFileName, (fileContents: string) => {
+        setItems(JSON.parse(fileContents));
+        setFileName(openedFileName);
+        setHasChanges(false);
+        setHostType(fileHostType);
+        onChange({
+          fileName: openedFileName,
+          hasChanges: false,
+          hostType: fileHostType,
+        });
+      });
+    } else {
+      //Todo add fs
+    }
+  };
+
   return (
-    <div>
-      <header className="py-2 flex flex-row">
+    <div className="flex flex-1 flex-col overflow-auto bg-gray-600">
+      <header className="pt-2 flex flex-row">
         <img src={logo} className="animate-spin h-8" alt="logo" />
         <br />
         <button id="addBtn" className="bg-blue-400 rounded-md p-1 mb-3">
@@ -166,30 +203,46 @@ const Project = () => {
           )}
 
           <button
-            onClick={onOpen}
-            className="bg-red-400 rounded-md p-1 mb-3 mx-1"
+            onClick={onOpenLocal}
+            className="bg-green-400 rounded-md p-1 mb-3 mx-1"
           >
             Open local
           </button>
+          <button
+            className="bg-green-400 rounded-md p-1 mb-3 mx-1"
+            onClick={onSaveToFs}
+          >
+            Save as Local
+          </button>
           {hostType && (
-            <button
-              className="bg-red-400 rounded-md p-1 mb-3 mx-1"
-              onClick={onSave}
-            >
-              Save {fileName} {hasChanges ? "*" : ""} {hostType ? hostType : ""}
-            </button>
-          )}
-
-          {editedFileRef.current && (
-            <button
-              onClick={onNew}
-              className="bg-red-400 rounded-md p-1 mb-3 mx-1"
-            >
-              New
-            </button>
+            <>
+              <button
+                className="bg-yellow-400 rounded-md p-1 mb-3 mx-1"
+                onClick={onSave}
+              >
+                Save {fileName} {hasChanges ? "*" : ""}{" "}
+                {hostType ? hostType : ""}
+              </button>
+            </>
           )}
         </div>
       </header>
+      <div className="px-2 pb-2 flex flex-1 flex-col overflow-hidden">
+        <div className="p-2 bg-gray-400">Open recent:</div>
+        <div className="flex flex-1 flex-col overflow-auto">
+          {recentFiles.map((file: any, index: number) => (
+            <div
+              className={`p-2 bg-gray-${
+                index % 2 ? 200 : 300
+              } hover:bg-gray-100`}
+              key={`recentFile-${file.fileName}-${file.hostType}`}
+              onClick={() => onOpen(file.fileName, file.hostType)}
+            >
+              {file.fileName} @ {file.hostType}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

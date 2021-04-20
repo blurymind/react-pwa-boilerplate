@@ -13,6 +13,7 @@ export interface Props {
 
 const NavBar = ({ className }: Props) => {
   const hasChanges = getLocalStorage("hasChanges");
+  console.log(hasChanges);
   return (
     <nav className={className} role="navigation">
       <Link className="self-center" to="/">

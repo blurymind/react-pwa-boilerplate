@@ -3,6 +3,35 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 const Gists = require("gists");
 
+const noGistsSet = () => {
+  Swal.fire(
+    "Not configured",
+    "Your github settings are not configured",
+    "warning"
+  );
+};
+
+export const openGistByName = (
+  gistId: string,
+  token: string,
+  fileName: string,
+  cb: (a: string) => void
+) => {
+  const gists = new Gists({ token });
+  if (gists && token && gistId) {
+    gists.get(gistId).then((gist: any) => {
+      const gistFiles = gist.body.files;
+      const content = gistFiles[fileName].content;
+      cb(content);
+      Swal.fire(
+        "Opened",
+        `The Yarn has been loaded from gist \nName: ${fileName}\nAt: ${gistId}\nLength: ${content.length} chars`,
+        "success"
+      );
+    });
+  } else noGistsSet();
+};
+
 export const TryOpenGist = async (
   gistId: string,
   token: string,
@@ -38,11 +67,7 @@ export const TryOpenGist = async (
       });
     });
   } else {
-    Swal.fire(
-      "Not configured",
-      "Your github settings are not configured",
-      "warning"
-    );
+    noGistsSet();
     cb({});
   }
 };
@@ -50,7 +75,7 @@ export const TryOpenGist = async (
 export const trySaveGist = async (
   gistId: string,
   token: string,
-  fileName = "new",
+  fileName = "NewFile",
   data: string
 ) => {
   const gists = new Gists({ token });
@@ -64,16 +89,12 @@ export const trySaveGist = async (
       });
       Swal.fire(
         "Saved!",
-        `The Yarn has been saved to gist \nName:${fileName}\nAt:${gistId}\nLength: ${data.length} chars`,
+        `The Yarn has been saved to gist \nName: ${fileName}\nAt: ${gistId}\nLength: ${data.length} chars`,
         "success"
       );
     });
   } else {
-    Swal.fire(
-      "Not configured",
-      "Your github settings are not configured",
-      "warning"
-    );
+    noGistsSet();
   }
 };
 
@@ -127,10 +148,6 @@ export const trySaveAsGist = ({
       });
     });
   } else {
-    Swal.fire(
-      "Not configured",
-      "Your github settings are not configured",
-      "warning"
-    );
+    noGistsSet();
   }
 };

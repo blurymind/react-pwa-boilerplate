@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DndSheet, { GroupType } from "@components/dnd-sheet";
 import useLocalStorage from "@hooks/use-local-storage";
 
@@ -53,13 +53,25 @@ const DATA = [
   },
 ];
 
-//https://web.dev/file-system-access/
-const Main = () => {
+export interface Props {
+  onChange: (a: any) => void;
+}
+
+const Main = ({ onChange = () => {} }: Props) => {
   const [items, setItems] = useLocalStorage("dnd-sheet-data", DATA);
+
+  const onSheetUpdated = () => {
+    onChange({ hasChanges: true });
+  };
 
   return (
     <div className="bg-gray-700 flex flex-1 flex-col overflow-auto">
-      <DndSheet items={items} setItems={setItems} className="px-4" />
+      <DndSheet
+        items={items}
+        setItems={setItems}
+        onChange={onSheetUpdated}
+        className="px-4"
+      />
       ==
     </div>
   );

@@ -6,10 +6,11 @@ export type GroupType = { items: Array<any>; id: string; label: string };
 export interface Props {
   items: Array<GroupType>;
   setItems: (p: Array<GroupType>) => void;
+  onChange: (p: Array<GroupType>) => void;
   className: string;
 }
 
-const DndSheet = ({ items, setItems, className }: Props) => {
+const DndSheet = ({ items, setItems, onChange, className }: Props) => {
   const [groups, setGroups] = useState<any>({});
 
   const buildAndSave = (items: Array<GroupType>) => {
@@ -81,6 +82,7 @@ const DndSheet = ({ items, setItems, className }: Props) => {
         };
 
         setItems(workValue);
+        onChange(workValue);
       }}
     >
       <Droppable droppableId="ROOT" type="group">
