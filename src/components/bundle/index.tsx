@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Spinner from "@components/spinner";
 
 export interface Props {
   publicUrl: string;
@@ -6,8 +7,23 @@ export interface Props {
 }
 
 const Bundle = ({ publicUrl, className = "flex flex-1" }: Props) => {
+  const [showSpinner, setShowSpinner] = useState(true);
   const bundleUrl = `${process.env.PUBLIC_URL}/${publicUrl}`;
-  return <iframe src={bundleUrl} className={className} />;
+
+  return (
+    <>
+      {showSpinner && <Spinner />}
+      <iframe
+        src={bundleUrl}
+        className={className}
+        id={publicUrl + "iframe"}
+        key={publicUrl}
+        onLoad={() => {
+          setShowSpinner(false);
+        }}
+      />
+    </>
+  );
 };
 
 export default Bundle;
