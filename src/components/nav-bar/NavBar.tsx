@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getLocalStorage } from "@hooks/use-local-storage";
 //rsc to get template
 //div.px-4.cursor-pointer.md:hidden and hit tab
 
@@ -11,10 +12,14 @@ export interface Props {
 }
 
 const NavBar = ({ className }: Props) => {
+  const hasChanges = getLocalStorage("hasChanges");
   return (
     <nav className={className} role="navigation">
       <Link className="self-center" to="/">
-        Home
+        Project {hasChanges ? "*" : ""}
+      </Link>
+      <Link className="self-center" to="/sheet">
+        Sheet
       </Link>
       <Link className="self-center" to="/settings">
         Settings
