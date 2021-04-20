@@ -5,6 +5,7 @@ import Project from "@pages/project";
 import Main from "@pages/main";
 import About from "@pages/about";
 import Settings from "@pages/settings";
+import Engine from "@pages/engine";
 import { getLocalStorage } from "@hooks/use-local-storage";
 
 const App = () => {
@@ -49,8 +50,9 @@ const App = () => {
                   />
                 )}
               />
-              <Route path="/about" component={About} />
+              <Route path="/engine" component={Engine} />
               <Route path="/settings" component={Settings} />
+              <Route path="/about" component={About} />
             </Switch>
           )}
         />

@@ -22,6 +22,9 @@ const NavBar = ({ className }: Props) => {
       <Link className="self-center" to="/sheet">
         Sheet
       </Link>
+      <Link className="self-center" to="/engine">
+        Run
+      </Link>
       <Link className="self-center" to="/settings">
         Settings
       </Link>
