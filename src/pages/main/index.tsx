@@ -123,8 +123,8 @@ const Main = () => {
   };
 
   return (
-    <div className="bg-gray-700 flex flex-1 flex-col">
-      <header className="flex-1 py-2 flex flex-row">
+    <div className="bg-gray-700 flex flex-1 flex-col overflow-auto">
+      <header className="py-2 flex flex-row">
         <img src={logo} className="animate-spin h-8" alt="logo" />
         <br />
         <button id="addBtn" className="bg-blue-400 rounded-md p-1 mb-3">
@@ -154,6 +154,7 @@ const Main = () => {
         </div>
       </header>
       <DndSheet items={items} setItems={setItems} className="px-4" />
+      ==
     </div>
   );
 };

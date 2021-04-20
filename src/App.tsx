@@ -7,8 +7,8 @@ import Settings from "@pages/settings";
 
 const App = () => {
   return (
-    <>
-      <NavBar className="flex justify-between item-center h-16 bg-white text-black relative shadow-sm font-mono" />
+    <div className="h-screen flex flex-col overflow-hidden">
+      <NavBar className="flex justify-between item-center h-16 bg-white text-black relative shadow-sm font-mono p-2" />
       <HashRouter basename={process.env.PUBLIC_URL}>
         <Route
           render={({ location }) => (
@@ -20,7 +20,7 @@ const App = () => {
           )}
         />
       </HashRouter>
-    </>
+    </div>
   );
 };
 

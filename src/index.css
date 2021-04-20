@@ -15,3 +15,8 @@
 /*  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',*/
 /*    monospace;*/
 /*}*/
+
+/*disables scroll up reloading the app on mobile*/
+body {
+    touch-action: none;
+}

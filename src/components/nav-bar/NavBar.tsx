@@ -13,13 +13,13 @@ export interface Props {
 const NavBar = ({ className }: Props) => {
   return (
     <nav className={className} role="navigation">
-      <Link className="m4" to="/">
+      <Link className="self-center" to="/">
         Home
       </Link>
-      <Link className="m4" to="/settings">
+      <Link className="self-center" to="/settings">
         Settings
       </Link>
-      <Link className="m4" to="/about">
+      <Link className="self-center" to="/about">
         <div className="pr-8 md:block hidden">About</div>
         <div className="px-4 cursor-pointer">
           <svg
@@ -38,8 +38,6 @@ const NavBar = ({ className }: Props) => {
           </svg>
         </div>
       </Link>
-
-      <div className="pr-8 md:block hidden">err</div>
     </nav>
   );
 };
