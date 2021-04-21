@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const {
   build: { appId },
-} = require("./../../package.json");
+} = require("../../package.json");
 
 const { notarize } = require("electron-notarize");
 
