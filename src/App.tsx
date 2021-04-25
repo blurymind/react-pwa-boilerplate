@@ -50,6 +50,7 @@ const App = () => {
                   />
                 )}
               />
+              {/*<Prompt message="Are you sure you want to leave?" />*/}
               <Route path="/engine" component={Engine} />
               <Route path="/settings" component={Settings} />
               <Route path="/about" component={About} />

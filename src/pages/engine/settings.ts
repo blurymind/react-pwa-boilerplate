@@ -33,13 +33,13 @@ export const settings = {
   ShowMainScreen: true,
 
   // Turn image preloading on/off, Default: true
-  Preload: true,
+  Preload: false,
 
   // Time interval between autosaves (In Minutes). Default: 0 (Off)
   AutoSave: 0,
 
   // Enable service workers; Default: true *
-  ServiceWorkers: true,
+  ServiceWorkers: false,
 
   // The Aspect Ratio your background images are on. This only has effect on
   // web deployed novels if forceAspectRatio flag is on.
