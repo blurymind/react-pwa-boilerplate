@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/react-pwa-boilerplate/static/css/main.f3222e51.chunk.css",
-    "main.js": "/react-pwa-boilerplate/static/js/main.ab70049f.chunk.js",
-    "main.js.map": "/react-pwa-boilerplate/static/js/main.ab70049f.chunk.js.map",
+    "main.js": "/react-pwa-boilerplate/static/js/main.567ecd62.chunk.js",
+    "main.js.map": "/react-pwa-boilerplate/static/js/main.567ecd62.chunk.js.map",
     "runtime-main.js": "/react-pwa-boilerplate/static/js/runtime-main.5b42e410.js",
     "runtime-main.js.map": "/react-pwa-boilerplate/static/js/runtime-main.5b42e410.js.map",
     "static/css/2.a1a16326.chunk.css": "/react-pwa-boilerplate/static/css/2.a1a16326.chunk.css",
@@ -23,6 +23,6 @@
     "static/css/2.a1a16326.chunk.css",
     "static/js/2.855ec67e.chunk.js",
     "static/css/main.f3222e51.chunk.css",
-    "static/js/main.ab70049f.chunk.js"
+    "static/js/main.567ecd62.chunk.js"
   ]
 }
