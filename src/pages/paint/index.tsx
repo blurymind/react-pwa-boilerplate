@@ -10,19 +10,19 @@ import {
   ToolHandlers,
 } from "react-artboard";
 // import { useHistory } from "react-artboard/dist/history";
-import {
-  FaPencilAlt,
-  FaPaintBrush,
-  FaMarker,
-  FaSprayCan,
-  FaDownload,
-  FaTrash,
-  FaUndo,
-  FaRedo,
-  FaGithub,
-} from "react-icons/fa";
-import { IoMdWater } from "react-icons/io";
-import type { IconType } from "react-icons/lib";
+// import {
+//   FaPencilAlt,
+//   FaPaintBrush,
+//   FaMarker,
+//   FaSprayCan,
+//   FaDownload,
+//   FaTrash,
+//   FaUndo,
+//   FaRedo,
+//   FaGithub,
+// } from "react-icons/fa";
+// import { IoMdWater } from "react-icons/io";
+// import type { IconType } from "react-icons/lib";
 
 export function Paint() {
   const [color, setColor] = useState("#531B93");
@@ -33,7 +33,7 @@ export function Paint() {
   // const brush = useBrush({ color, strokeWidth });
   // const marker = useMarker({ color, strokeWidth });
   // const watercolor = useWatercolor({ color, strokeWidth });
-  const airbrush = useAirbrush({ color: "red", strokeWidth: 40 });
+  const airbrush = useAirbrush({ color: "red", strokeWidth: 40 }); // <--- CRASH!
   // const shading = useShadingBrush({
   //   color,
   //   spreadFactor: (1 / 45) * strokeWidth,
