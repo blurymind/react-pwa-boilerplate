@@ -22,7 +22,7 @@ export const initiateFsPath = (virtualDirectory = "") => {
           //@ts-ignore
           window.gFileSystem = fs;
           fs.root.getDirectory(
-            `base/${virtualDirectory}`,
+            `${virtualDirectory}`,
             {
               create: true,
             },
