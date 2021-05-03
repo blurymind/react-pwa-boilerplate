@@ -14,13 +14,7 @@ const gameFolders = [
 ];
 const Resources = () => {
   const fileSysRef = useRef(null);
-  const [iframeUrl, setIframeUrl] = useState(
-    `filesystem:${window.location.origin}/persistent`
-  );
   const [basePath, setBasePath] = useState("");
-
-  //@ts-ignore
-  console.log(process.env, window.location.host, window.location.origin);
 
   useEffect(() => {
     gameFolders.forEach(initiateFsPath);
@@ -51,7 +45,7 @@ const Resources = () => {
       )}
       {basePath}
       <iframe
-        src={iframeUrl}
+        src={`filesystem:${window.location.origin}/persistent`}
         className="w-full h-screen"
         ref={fileSysRef}
         onLoad={() => {
