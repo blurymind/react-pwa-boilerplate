@@ -6,6 +6,7 @@ import Main from "@pages/main";
 import About from "@pages/about";
 import Settings from "@pages/settings";
 import Engine from "@pages/engine";
+import Resources from "@pages/resources";
 import { getLocalStorage } from "@hooks/use-local-storage";
 
 const App = () => {
@@ -53,6 +54,7 @@ const App = () => {
               {/*<Prompt message="Are you sure you want to leave?" />*/}
               <Route path="/engine" component={Engine} />
               <Route path="/settings" component={Settings} />
+              <Route path="/resources" component={Resources} />
               <Route path="/about" component={About} />
             </Switch>
           )}

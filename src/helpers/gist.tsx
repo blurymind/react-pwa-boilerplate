@@ -76,7 +76,7 @@ export const trySaveGist = async (
   gistId: string,
   token: string,
   fileName = "NewFile",
-  data: string
+  data: any
 ) => {
   const gists = new Gists({ token });
 
@@ -85,7 +85,15 @@ export const trySaveGist = async (
       const gistFiles = Object.keys(gist.body.files);
       console.log(gistFiles);
       gists.edit(gistId, {
-        files: { [fileName]: { content: data } },
+        files: {
+          [fileName]: {
+            content: data,
+            headers: {
+              contentType: "image/png",
+              "content-type": "image/png",
+            },
+          },
+        },
       });
       Swal.fire(
         "Saved!",
@@ -109,7 +117,7 @@ export const trySaveAsGist = ({
   setFileName: (a: string) => void;
   gistId: string;
   token: string;
-  data: string;
+  data: any;
 }) => {
   const gists = new Gists({ token });
 

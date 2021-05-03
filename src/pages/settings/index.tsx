@@ -5,12 +5,49 @@ import useLocalStorage from "@hooks/use-local-storage";
 const Settings = () => {
   const [gistId, setGistId] = useLocalStorage("gistId", "");
   const [gistToken, setGistToken] = useLocalStorage("gistToken", "");
+    const [userName, setUserName] = useLocalStorage("userName", "");
+    const [password, setPassword] = useLocalStorage("password", "");
+    const [repositoryName, setRepositoryName] = useLocalStorage("repositoryName", "");
 
   return (
     <div className="border flex flex-col m-4 p-1 bg-gray-100">
       <label className="mb-3 bg-gray-200 flex-1">Storage:</label>
+        <div className="mb-1 flex-1">
+            <label>Git username: </label>
+            <input
+                onChange={(e) => setUserName(e.target.value)}
+                value={userName}
+                className="bg-white flex-1"
+            />
+        </div>
+        <div className="mb-1 flex-1">
+            <label>Password: </label>
+            <input
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                value={password}
+                className="bg-white flex-1"
+            />
+        </div>
+        <div className="mb-1 flex-1">
+            <label>Git branch name: </label>
+            <input
+                onChange={(e) => setRepositoryName(e.target.value)}
+                value={repositoryName}
+                className="bg-white flex-1"
+            />
+            {repositoryName.length === 0 && (
+                <a
+                    target="_blank"
+                    href="https://github.com/new"
+                    className="ml-4 bg-gray-300 px-3"
+                >
+                    create
+                </a>
+            )}
+        </div>
       <div className="mb-1 flex-1">
-        <label>Gist token: </label>
+        <label>Auth token: </label>
         <input
           onChange={(e) => setGistToken(e.target.value)}
           type="password"

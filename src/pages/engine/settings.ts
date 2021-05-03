@@ -84,7 +84,7 @@ export const settings = {
   // the holder for the other asset specific directories, this directories are
   // used when retrieving the files on the game.
   AssetsPath: {
-    root: `${process.env.PUBLIC_URL}/assets`,
+    root: `filesystem:${window.location.origin}/persistent/base`,
     characters: "characters",
     icons: "icons",
     images: "images",

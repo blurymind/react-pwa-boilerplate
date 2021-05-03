@@ -25,6 +25,9 @@ const NavBar = ({ className }: Props) => {
       <Link className="self-center" to="/engine">
         Run
       </Link>
+      <Link className="self-center" to="/resources">
+        Resources
+      </Link>
       <Link className="self-center" to="/settings">
         Settings
       </Link>
