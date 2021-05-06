@@ -4,6 +4,7 @@ import { getLocalStorage } from "@hooks/use-local-storage";
 const GitHubApi = require("github-api");
 const { Octokit } = require("@octokit/rest");
 
+// try to copy this https://github.com/lostintangent/gistpad/blob/01a3ac2ae3a25f86d78eb09d7aeda3aeeba8ea97/src/fileSystem/git.ts#L35
 const Resources = () => {
   const gistId = getLocalStorage("gistId");
   const token = getLocalStorage("gistToken");

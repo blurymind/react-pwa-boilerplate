@@ -10227,10 +10227,10 @@ react-app-polyfill@^2.0.0:
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
 
-react-artboard@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/react-artboard/-/react-artboard-0.0.4.tgz#9f45d47bc99a4cabc25b62127120209ee599684f"
-  integrity sha512-UmTlh9D03YnNP7dMuLWMxP+208GhaUd+5FbTM97ASSbI1v/hq3SzDjT3WbCqdzUGbvxK4gD91CNGmYT92ORe4g==
+react-artboard@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-artboard/-/react-artboard-0.0.6.tgz#d2f144cf10ea0beb11110f87f18bb473be804ffa"
+  integrity sha512-L0Y70JKOvt40ilsbcR8Bpd/OBvvNuOhGh4G5IgIgBUncLYzPB5aaiSuiYRFUu/ra70VBGLLVDPww1ifccZoUyw==
   dependencies:
     tinycolor2 "^1.4.2"
 
@@ -10297,6 +10297,11 @@ react-gist@^1.2.2:
   integrity sha512-bS8jkqunrsrUYzSe600zYPI6IvudLFsh68Bln+q8+GRZ2uUnrkOuEAxllWbZwaveqby94YXBBmBCC3qw9ee5hQ==
   dependencies:
     prop-types "^15.6.0"
+
+react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <NavBar className="flex justify-between item-center h-13 bg-white text-black relative shadow-sm font-mono p-2" />
+      <NavBar className="flex justify-between item-center h-13 bg-white text-black relative shadow-sm font-mono" />
       <div className="flex justify-between item-center bg-gray-800 pl-2 text-white text-xs">
         {fileName}-{hostType ? hostType : ""}
         {hasChanges ? "*" : ""}
