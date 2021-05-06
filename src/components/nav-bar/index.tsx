@@ -108,6 +108,22 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
+      <NavBarItem name="Run" path="/engine" textColor="yellow-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      </NavBarItem>
       <NavBarItem name="Settings" path="/settings" textColor="purple-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -130,22 +146,7 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
-      <NavBarItem name="Run" path="/engine" textColor="yellow-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 10V3L4 14h7v7l9-11h-7z"
-          />
-        </svg>
-      </NavBarItem>
+
       <NavBarItem name="About" path="/about" textColor="grey-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
