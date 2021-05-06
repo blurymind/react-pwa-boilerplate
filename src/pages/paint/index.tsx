@@ -31,7 +31,7 @@ const addAlpha = (color: string, opacity: number): string => {
   return color + _opacity.toString(16).toUpperCase();
 };
 
-const styles = { button: "w-full p-0 m-0 mb-1 mx-1 h-10" };
+const styles = { button: "w-full p-0 m-0 mb-1 mx-1 h-9" };
 export function Paint() {
   const [color, setColor] = useState("#531B93");
   const [strokeWidth, setStrokeWidth] = useState(40);
@@ -74,7 +74,7 @@ export function Paint() {
     // alert(e.pointerType);
     switch (e.pointerType) {
       case "touch": {
-        return 0;
+        return 0.5;
         // if (e.width < 10 && e.height < 10) {
         //   return (e.width + e.height) * 2 + 10;
         // } else {
@@ -107,7 +107,7 @@ export function Paint() {
             type="color"
             value={color}
             onInput={(evt) => setColor(evt.currentTarget.value)}
-            className="w-9 h-9 mx-1"
+            className="w-9 h-12 mx-1"
           />
 
           {tools.map(([tool, Icon], index) => (
