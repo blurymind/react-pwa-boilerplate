@@ -39,7 +39,7 @@ export const setScript = (monogatari: any, blobs: any) => {
   //   southNoKey: "emptyWall.png",
   // });
 
-  console.log(blobs.scenes);
+  console.log(blobs);
   monogatari.assets("scenes", blobs.scenes);
   // Define the Characters
   monogatari.characters({

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { initiateFsPath, uploadToFs } from "@helpers/filesys-api";
-import useLocalStorage from "@hooks/use-local-storage";
+import { initiateFsPath } from "@helpers/filesys-api";
 
 // try to copy this https://github.com/lostintangent/gistpad/blob/01a3ac2ae3a25f86d78eb09d7aeda3aeeba8ea97/src/fileSystem/git.ts#L35
 const gameFolders = [
@@ -14,10 +13,9 @@ const gameFolders = [
   "voices",
   "gallery",
 ];
-const Resources = () => {
+const Resources = ({ blobs, setBlobs }: any) => {
   const fileSysRef = useRef(null);
   const [basePath, setBasePath] = useState("");
-  const [blobs, setBlobs] = useLocalStorage("blobs", { scenes: {} });
 
   useEffect(() => {
     gameFolders.forEach(initiateFsPath);

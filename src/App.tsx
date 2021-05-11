@@ -8,7 +8,7 @@ import Settings from "@pages/settings";
 import Engine from "@pages/engine";
 import Resources from "@pages/resources";
 import Paint from "@pages/paint";
-import { getLocalStorage } from "@hooks/use-local-storage";
+import useLocalStorage, { getLocalStorage } from "@hooks/use-local-storage";
 
 const App = () => {
   const [projectInfo, setProjectInfo] = useState({
@@ -16,6 +16,7 @@ const App = () => {
     hasChanges: getLocalStorage("hasChanges"),
     hostType: getLocalStorage("hostType"),
   });
+  const [blobs, setBlobs] = useLocalStorage("blobs", { scenes: {} });
   const { fileName, hasChanges, hostType } = projectInfo;
 
   return (
@@ -53,10 +54,18 @@ const App = () => {
                 )}
               />
               {/*<Prompt message="Are you sure you want to leave?" />*/}
-              <Route path="/engine" component={Engine} />
+              <Route
+                path="/engine"
+                render={(props) => <Engine {...props} blobs={blobs} />}
+              />
               <Route path="/settings" component={Settings} />
               <Route path="/paint" component={Paint} />
-              <Route path="/resources" component={Resources} />
+              <Route
+                path="/resources"
+                render={(props) => (
+                  <Resources {...props} blobs={blobs} setBlobs={setBlobs} />
+                )}
+              />
               <Route path="/about" component={About} />
             </Switch>
           )}

@@ -10,8 +10,7 @@ const Monogatari = require("@monogatari/core");
 const { $_ready, $_, default: monogatari } = Monogatari;
 
 // TODO turn into a component
-const Engine = () => {
-  const blobs = getLocalStorage("blobs");
+const Engine = ({ blobs }: any) => {
   useEffect(() => {
     // SETTINGS
     monogatari.settings(settings);

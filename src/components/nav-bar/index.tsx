@@ -15,13 +15,13 @@ const NavBarItem = ({
   name = "Project",
   hasChanges = false,
   path = "/",
-  textColor = "red-400",
+  textColor = "text-red-400",
   children,
 }: any) => {
   const { pathname: location } = useLocation();
   return (
     <Link
-      className={`self-center text-${textColor} ${
+      className={`self-center ${textColor} ${
         location === path ? "bg-gray-100" : ""
       }`}
       to={path}
@@ -41,7 +41,7 @@ const NavBar = ({ className }: Props) => {
       <NavBarItem
         name="Project"
         path="/"
-        textColor="red-400"
+        textColor="text-red-400"
         hasChanges={hasChanges}
       >
         <svg
@@ -59,7 +59,7 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
-      <NavBarItem name="Sheet" path="/sheet" textColor="blue-400">
+      <NavBarItem name="Sheet" path="/sheet" textColor="text-blue-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -76,7 +76,7 @@ const NavBar = ({ className }: Props) => {
         </svg>
       </NavBarItem>
 
-      <NavBarItem name="Paint" path="/paint" textColor="pink-500">
+      <NavBarItem name="Paint" path="/paint" textColor="text-pink-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -92,7 +92,7 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
-      <NavBarItem name="Files" path="/resources" textColor="green-500">
+      <NavBarItem name="Files" path="/resources" textColor="text-green-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -108,7 +108,7 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
-      <NavBarItem name="Run" path="/engine" textColor="yellow-400">
+      <NavBarItem name="Run" path="/engine" textColor="text-yellow-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -124,7 +124,7 @@ const NavBar = ({ className }: Props) => {
           />
         </svg>
       </NavBarItem>
-      <NavBarItem name="Settings" path="/settings" textColor="purple-500">
+      <NavBarItem name="Settings" path="/settings" textColor="text-purple-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -147,7 +147,7 @@ const NavBar = ({ className }: Props) => {
         </svg>
       </NavBarItem>
 
-      <NavBarItem name="About" path="/about" textColor="grey-500">
+      <NavBarItem name="About" path="/about" textColor="text-grey-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
