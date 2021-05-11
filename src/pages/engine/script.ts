@@ -1,4 +1,4 @@
-export const setScript = (monogatari: any) => {
+export const setScript = (monogatari: any, blobs: any) => {
   // Define the messages used in the game.
   monogatari.action("message").messages({});
 
@@ -30,15 +30,17 @@ export const setScript = (monogatari: any) => {
   monogatari.assets("images", {});
 
   // Define the backgrounds for each scene.
-  monogatari.assets("scenes", {
-    northClosed: "facingDoorClosed.png",
-    northOpen: "facingDoorOpen.png",
-    east: "emptyWall.png",
-    west: "emptyWall.png",
-    southKey: "key.png",
-    southNoKey: "emptyWall.png",
-  });
+  // monogatari.assets("scenes", {
+  //   northClosed: "facingDoorClosed.png",
+  //   northOpen: "facingDoorOpen.png",
+  //   east: "emptyWall.png",
+  //   west: "emptyWall.png",
+  //   southKey: "key.png",
+  //   southNoKey: "emptyWall.png",
+  // });
 
+  console.log(blobs.scenes);
+  monogatari.assets("scenes", blobs.scenes);
   // Define the Characters
   monogatari.characters({
     m: {
@@ -56,8 +58,8 @@ export const setScript = (monogatari: any) => {
           Condition: () => {
             return monogatari.storage().doorOpen;
           },
-          False: "show scene northClosed",
-          True: "show scene northOpen",
+          False: "show scene facingDoorClosed",
+          True: "show scene facingDoorOpen",
         },
       },
       {
@@ -104,8 +106,8 @@ export const setScript = (monogatari: any) => {
           Condition: () => {
             return monogatari.storage().haveKey;
           },
-          True: "show scene southNoKey",
-          False: "show scene southKey",
+          True: "show scene emptyWall",
+          False: "show scene key",
         },
       },
       {
@@ -158,7 +160,7 @@ export const setScript = (monogatari: any) => {
       "jump South",
     ],
     East: [
-      "show scene east",
+      "show scene emptyWall",
       {
         Choice: {
           Dialog: `m Facing East.`,
@@ -182,7 +184,7 @@ export const setScript = (monogatari: any) => {
       },
     ],
     West: [
-      "show scene west",
+      "show scene emptyWall",
       {
         Choice: {
           Dialog: `m Facing West.`,

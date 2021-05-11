@@ -4,12 +4,14 @@ import CustomTag from "@components/custom-tag";
 import "./main.css";
 import { settings, preferences, storage } from "./settings";
 import { setScript } from "./script";
+import { getLocalStorage } from "@hooks/use-local-storage";
 
 const Monogatari = require("@monogatari/core");
 const { $_ready, $_, default: monogatari } = Monogatari;
 
 // TODO turn into a component
 const Engine = () => {
+  const blobs = getLocalStorage("blobs");
   useEffect(() => {
     // SETTINGS
     monogatari.settings(settings);
@@ -17,7 +19,7 @@ const Engine = () => {
     // Persistent Storage Variable
     monogatari.storage(storage);
     //// Script
-    setScript(monogatari);
+    setScript(monogatari, blobs);
 
     /// Main
 

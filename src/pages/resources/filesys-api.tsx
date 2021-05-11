@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { initiateFsPath, uploadToFs } from "@helpers/filesys-api";
-import useLocalStorage from "@hooks/use-local-storage";
 
 // try to copy this https://github.com/lostintangent/gistpad/blob/01a3ac2ae3a25f86d78eb09d7aeda3aeeba8ea97/src/fileSystem/git.ts#L35
 const gameFolders = [
@@ -17,47 +16,14 @@ const gameFolders = [
 const Resources = () => {
   const fileSysRef = useRef(null);
   const [basePath, setBasePath] = useState("");
-  const [blobs, setBlobs] = useLocalStorage("blobs", { scenes: {} });
 
   useEffect(() => {
     gameFolders.forEach(initiateFsPath);
   }, []);
 
-  console.log(blobs);
-  const uploadToBlob = (file: any) => {
-    const blobUrl = URL.createObjectURL(file);
-    console.log("bloby", file, blobUrl);
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = "blob";
-    xhr.onload = function () {
-      var recoveredBlob = xhr.response;
-      var reader = new FileReader();
-      reader.onload = function () {
-        var blobAsDataUrl = reader.result;
-        console.log("as data url", blobAsDataUrl);
-        setBlobs({
-          scenes: {
-            ...blobs.scenes,
-            //@ts-ignore
-            [file.name.replace(".png", "")]: (blobAsDataUrl || "").replace(
-              "data:",
-              ""
-            ),
-          },
-        });
-        // window.location = blobAsDataUrl;
-      };
-
-      reader.readAsDataURL(recoveredBlob);
-    };
-
-    xhr.open("GET", blobUrl);
-    xhr.send();
-  };
   const onImageUploadToFsCache = (event: any) => {
     event.target.files.forEach((file: any) => {
-      uploadToBlob(file);
-      // uploadToFs(file, basePath);
+      uploadToFs(file, basePath);
     });
     setTimeout(() => {
       //@ts-ignore
@@ -79,9 +45,19 @@ const Resources = () => {
         />
       )}
       {basePath}
-      {Object.keys(blobs.scenes).map((key) => (
-        <div key={key}>{key}</div>
-      ))}
+      <iframe
+        src={`filesystem:${window.location.origin}/persistent`}
+        className="w-full h-screen"
+        ref={fileSysRef}
+        onLoad={() => {
+          setBasePath(
+            //@ts-ignore
+            fileSysRef.current?.contentWindow.location.pathname.slice(1, -1)
+          );
+          //@ts-ignore
+          console.log(fileSysRef.current?.contentWindow);
+        }}
+      />
     </div>
   );
 };

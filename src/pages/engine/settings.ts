@@ -84,12 +84,12 @@ export const settings = {
   // the holder for the other asset specific directories, this directories are
   // used when retrieving the files on the game.
   AssetsPath: {
-    root: `filesystem:${window.location.origin}/persistent`,
+    root: `data:`, //`filesystem:${window.location.origin}/persistent`
     characters: "characters",
     icons: "icons",
     images: "images",
     music: "music",
-    scenes: "scenes",
+    scenes: "",
     sounds: "sounds",
     ui: "ui",
     videos: "videos",
