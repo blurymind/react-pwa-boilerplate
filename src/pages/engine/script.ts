@@ -1,3 +1,5 @@
+import { getCache } from "@pages/resources";
+
 export const setScript = (monogatari: any, blobs: any) => {
   // Define the messages used in the game.
   monogatari.action("message").messages({});
@@ -40,7 +42,15 @@ export const setScript = (monogatari: any, blobs: any) => {
   // });
 
   console.log(blobs);
-  monogatari.assets("scenes", blobs.scenes);
+  const cachedScenes: any = {};
+  blobs.scenes.forEach((key: string) => {
+    getCache(key, (dataUri: string) => {
+      cachedScenes[key.replace(".png", "")] = dataUri;
+      monogatari.assets("scenes", cachedScenes);
+    });
+  });
+  console.log("SCENES", blobs.scenes, cachedScenes);
+  monogatari.assets("scenes", cachedScenes);
   // Define the Characters
   monogatari.characters({
     m: {

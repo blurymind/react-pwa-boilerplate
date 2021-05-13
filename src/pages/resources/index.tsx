@@ -13,44 +13,56 @@ const gameFolders = [
   "voices",
   "gallery",
 ];
+
+const storeCache = (key: string, dataUri: any) => {
+  // Store to cache, then create datauris from its keys
+  // use the keys to access the datauris
+  fetch(dataUri).then((res) => {
+    return caches.open("testCache").then((cache) => {
+      console.log("CACHE", cache);
+      return cache.put(key, res);
+    });
+  });
+};
+const createDataUri = (blob: any, cb: any) => {
+  blob?.then((recoveredBlob: any) => {
+    console.log("got", recoveredBlob);
+    var reader = new FileReader();
+    reader.onload = function () {
+      var blobAsDataUrl = reader.result;
+      console.log("as data url", blobAsDataUrl);
+      cb(blobAsDataUrl);
+    };
+    reader.readAsDataURL(recoveredBlob);
+  });
+};
+export const getCache = (key = "", cb = (p: any) => {}) => {
+  caches.open("testCache").then((cache) => {
+    cache.match(key).then((res) => {
+      console.log("matched", res);
+
+      createDataUri(res?.blob(), (result: any) => {
+        console.log("created datauri", result);
+        cb(result);
+      });
+    });
+  });
+};
 const Resources = ({ blobs, setBlobs }: any) => {
   const fileSysRef = useRef(null);
   const [basePath, setBasePath] = useState("");
-
   useEffect(() => {
     gameFolders.forEach(initiateFsPath);
   }, []);
 
-  console.log(blobs);
+  console.log("blobs", blobs);
+
   const uploadToBlob = (file: any) => {
     const blobUrl = URL.createObjectURL(file);
-    console.log("bloby", file, blobUrl);
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = "blob";
-    xhr.onload = function () {
-      var recoveredBlob = xhr.response;
-      var reader = new FileReader();
-      reader.onload = function () {
-        var blobAsDataUrl = reader.result;
-        console.log("as data url", blobAsDataUrl);
-        setBlobs({
-          scenes: {
-            ...blobs.scenes,
-            //@ts-ignore
-            [file.name.replace(".png", "")]: (blobAsDataUrl || "").replace(
-              "data:",
-              ""
-            ),
-          },
-        });
-        // window.location = blobAsDataUrl;
-      };
-
-      reader.readAsDataURL(recoveredBlob);
-    };
-
-    xhr.open("GET", blobUrl);
-    xhr.send();
+    storeCache(file.name, blobUrl);
+    setBlobs({
+      scenes: [...blobs.scenes, file.name],
+    });
   };
   const onImageUploadToFsCache = (event: any) => {
     event.target.files.forEach((file: any) => {
@@ -77,7 +89,7 @@ const Resources = ({ blobs, setBlobs }: any) => {
         />
       )}
       {basePath}
-      {Object.keys(blobs.scenes).map((key) => (
+      {blobs.scenes.map((key: any) => (
         <div key={key}>{key}</div>
       ))}
     </div>

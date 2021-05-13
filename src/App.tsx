@@ -16,7 +16,7 @@ const App = () => {
     hasChanges: getLocalStorage("hasChanges"),
     hostType: getLocalStorage("hostType"),
   });
-  const [blobs, setBlobs] = useLocalStorage("blobs", { scenes: {} });
+  const [blobs, setBlobs] = useLocalStorage("blobs", { scenes: [] });
   const { fileName, hasChanges, hostType } = projectInfo;
 
   return (
