@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
-import "@monogatari/core/dist/engine/core/monogatari.css";
 import CustomTag from "@components/custom-tag";
-import "./main.css";
 import { settings, preferences, storage } from "./settings";
 import { setScript } from "./script";
-import { getLocalStorage } from "@hooks/use-local-storage";
 
 const Monogatari = require("@monogatari/core");
 const { $_ready, $_, default: monogatari } = Monogatari;
@@ -35,6 +32,8 @@ const Engine = ({ blobs }: any) => {
 
     // });
 
+    require("./main.css");
+    require("@monogatari/core/dist/engine/core/monogatari.css");
     return () => {
       // Workaround for monogatari not clearing some state from memory and failing to load next time
       console.log("unmount", monogatari.Storage.configuration().name);
