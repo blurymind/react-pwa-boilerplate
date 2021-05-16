@@ -7,7 +7,7 @@ const Monogatari = require("@monogatari/core");
 const { $_ready, $_, default: monogatari } = Monogatari;
 
 // TODO turn into a component
-const Engine = ({ blobs }: any) => {
+const Engine = () => {
   useEffect(() => {
     // SETTINGS
     monogatari.settings(settings);
@@ -15,7 +15,7 @@ const Engine = ({ blobs }: any) => {
     // Persistent Storage Variable
     monogatari.storage(storage);
     //// Script
-    setScript(monogatari, blobs);
+    setScript(monogatari);
 
     /// Main
 
@@ -44,7 +44,11 @@ const Engine = ({ blobs }: any) => {
   });
 
   return (
-    <div id="monogatari" className="flex flex-1">
+    <div
+      id="monogatari"
+      className="flex flex-1"
+      // style={{ transform: "rotate(90deg)" }}
+    >
       <CustomTag as="visual-novel">
         <CustomTag as="language-selection-screen" />
         <CustomTag as="loading-screen" />

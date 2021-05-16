@@ -1,6 +1,6 @@
-import { getCache } from "@pages/resources";
+import { getCache, getCacheKeys } from "@helpers/cache";
 
-export const setScript = (monogatari: any, blobs: any) => {
+export const setScript = (monogatari: any) => {
   // Define the messages used in the game.
   monogatari.action("message").messages({});
 
@@ -41,15 +41,16 @@ export const setScript = (monogatari: any, blobs: any) => {
   //   southNoKey: "emptyWall.png",
   // });
 
-  console.log(blobs);
   const cachedScenes: any = {};
-  blobs.scenes.forEach((key: string) => {
-    getCache(key, (dataUri: string) => {
-      cachedScenes[key.replace(".png", "")] = dataUri;
-      monogatari.assets("scenes", cachedScenes);
-    });
-  });
-  console.log("SCENES", blobs.scenes, cachedScenes);
+  getCacheKeys((keys: any) =>
+    keys.forEach((key: string) => {
+      getCache(key, (dataUri: string) => {
+        cachedScenes[key.replace(".png", "")] = dataUri;
+        monogatari.assets("scenes", cachedScenes);
+      });
+    })
+  );
+  console.log("SCENES", cachedScenes);
   monogatari.assets("scenes", cachedScenes);
   // Define the Characters
   monogatari.characters({

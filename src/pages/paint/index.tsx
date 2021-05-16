@@ -25,7 +25,7 @@ export function Paint() {
       });
     }, 100);
   }, []);
-  return <div id="chickenpaint-parent" className=" " />;
+  return <div id="chickenpaint-parent" className="flex-1" />;
 }
 
 export default Paint;

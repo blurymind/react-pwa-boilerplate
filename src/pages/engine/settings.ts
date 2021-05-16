@@ -89,7 +89,7 @@ export const settings = {
     icons: "icons",
     images: "images",
     music: "music",
-    scenes: "",
+    scenes: "scenes",
     sounds: "sounds",
     ui: "ui",
     videos: "videos",
