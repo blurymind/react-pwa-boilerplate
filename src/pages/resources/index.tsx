@@ -29,7 +29,9 @@ const Resources = ({}: any) => {
   const uploadToBlob = (file: any) => {
     const blobUrl = URL.createObjectURL(file);
     storeCache(file.name, blobUrl);
-    getCacheKeys(setCachedFiles);
+    setTimeout(() => {
+      getCacheKeys(setCachedFiles);
+    }, 100);
   };
   const onImageUploadToFsCache = (event: any) => {
     event.target.files.forEach((file: any) => {
