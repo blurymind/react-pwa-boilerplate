@@ -96,3 +96,11 @@ export const getCacheKeys = (cb: any) => {
     });
   });
 };
+
+export const binaryStringToByteArray = (s: any) => {
+  var result = new Uint8Array(s.length);
+  for (var i = 0; i < s.length; i++) {
+    result[i] = s.charCodeAt(i);
+  }
+  return result;
+};

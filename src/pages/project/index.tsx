@@ -15,9 +15,8 @@ import {
 } from "@helpers/local-fs";
 import { initiatePwaButton } from "@helpers/pwa-tools";
 import { getAllCacheBlobs } from "@helpers/cache";
-import { ensureRepo } from "./git";
 const { Octokit } = require("@octokit/rest");
-const { Base64 } = require("js-base64");
+
 const GitHubApi = require("github-api");
 
 const DATA = [
