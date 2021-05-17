@@ -1,4 +1,4 @@
-import { getCache, getCacheKeys } from "@helpers/cache";
+import { getCacheData, getCacheKeys } from "@helpers/cache";
 
 export const setScript = (monogatari: any) => {
   // Define the messages used in the game.
@@ -44,7 +44,7 @@ export const setScript = (monogatari: any) => {
   const cachedScenes: any = {};
   getCacheKeys((keys: any) =>
     keys.forEach((key: string) => {
-      getCache(key, (dataUri: string) => {
+      getCacheData(key, (dataUri: string) => {
         cachedScenes[key.replace(".png", "")] = dataUri;
         monogatari.assets("scenes", cachedScenes);
       });

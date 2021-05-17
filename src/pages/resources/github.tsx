@@ -41,23 +41,28 @@ const Resources = () => {
   //https://web.dev/read-files/
   const updateGist = async (data: any) => {
     console.log("WRITE TO OCTO", data);
-    await octokit
-      .request(`PATCH /gists/${gistId}`, {
-        gist_id: gistId,
-        description: data.commitTitle,
-        // accept: "application/vnd.github.v3.base64",
-        files: {
-          [data.filename]: {
-            content: data.content,
-          },
-        },
-      })
-      .then((result: any) => {
-        console.log("DONE!", result);
-        return result;
-      });
+    // await octokit
+    //   .request(`PATCH /gists/${gistId}`, {
+    //     gist_id: gistId,
+    //     description: data.commitTitle,
+    //     // accept: "application/vnd.github.v3.base64",
+    //     files: {
+    //       [data.filename]: {
+    //         content: data.content,
+    //       },
+    //     },
+    //   })
+    //   .then((result: any) => {
+    //     console.log("DONE!", result);
+    //     return result;
+    //   });
+    // const blob = await octokit.rest.git.createBlob({
+    //   owner: userName,
+    //   repo: repository,
+    //   content: data,
+    // });
 
-    console.log(octokit);
+    console.log(">>>", octokit);
   };
   const getGists = async () => {
     // octokit.git.list_commits();

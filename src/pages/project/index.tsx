@@ -14,6 +14,11 @@ import {
   getFileHandle,
 } from "@helpers/local-fs";
 import { initiatePwaButton } from "@helpers/pwa-tools";
+import { getAllCacheBlobs } from "@helpers/cache";
+import { ensureRepo } from "./git";
+const { Octokit } = require("@octokit/rest");
+const { Base64 } = require("js-base64");
+const GitHubApi = require("github-api");
 
 const DATA = [
   {
@@ -70,14 +75,119 @@ export interface Props {
 const Project = ({ onChange = () => {} }: Props) => {
   const gistId = getLocalStorage("gistId");
   const token = getLocalStorage("gistToken");
+  const userName = getLocalStorage("userName");
+  const repo = getLocalStorage("repositoryName");
   const [items, setItems] = useLocalStorage("dnd-sheet-data", DATA);
   const [hasChanges, setHasChanges] = useLocalStorage("hasChanges", false);
   const [fileName, setFileName] = useLocalStorage("fileName", "NewFile");
   const [hostType, setHostType] = useLocalStorage("hostType", null); //null | "gist" | "fs"
   const [recentFiles, setRecentFiles] = useLocalStorage("recentFiles", []);
   const editedFileRef = useRef<any>(null);
+  const octokit = new Octokit({ auth: token });
+  const gitHub = useRef(
+    new GitHubApi({
+      username: userName,
+      token: token,
+    })
+  );
+  console.log("GITHUB", gitHub);
+
+  const addCacheToGist = async () => {
+    getAllCacheBlobs(async (cache: any) => {
+      const saveFile = (data: any, encode = false) => {
+        return new Promise((resolve, reject) => {
+          // using tests, since their docs are poor https://github.com/github-tools/github/blob/master/test/repository.spec.js
+          data.repository.writeFile(
+            data.branchName,
+            data.filename,
+            data.content,
+            data.commitTitle,
+            { encode },
+            (err: any) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(data.repository);
+              }
+            }
+          );
+        });
+      };
+      const readFile = (file: any) => {
+        return new Promise(function (resolve, reject) {
+          const fileReader = new FileReader();
+          fileReader.addEventListener("load", function (event) {
+            const content = event.target?.result;
+            console.log("file", event, file);
+            //@ts-ignore
+            const result = content.substr(content.indexOf(",") + 1);
+
+            resolve({
+              filename: file.name,
+              file: file,
+              content: result,
+            });
+          });
+
+          fileReader.addEventListener("error", function (error) {
+            reject(error);
+          });
+
+          fileReader.readAsDataURL(file.content); //asDataUrl
+        });
+      };
+      const filesPromises = [].map.call(Object.values(cache), readFile);
+      const gitRepo = gitHub.current?.getRepo(userName, repo);
+      return Promise.all(filesPromises)
+        .then(function (files) {
+          return files.reduce((promise: any, file: any) => {
+            return promise.then(function () {
+              console.log("FLINE>", file);
+              // Upload the file on GitHub
+              return saveFile({
+                repository: gitRepo,
+                branchName: "master",
+                filename: file.filename,
+                content: file.content,
+                commitTitle: "add file " + file.filename,
+              });
+            });
+          }, Promise.resolve());
+        })
+        .then(() => {
+          console.log("SAVE PROJECT");
+          saveFile(
+            {
+              repository: gitRepo,
+              branchName: "master",
+              filename: "project.json",
+              content: JSON.stringify(items),
+              commitTitle: "add project file",
+            },
+            true
+          );
+        })
+        .then(() => {
+          alert("DONE!");
+        });
+    }, true);
+  };
+
+  console.log("CRED:", userName, repo, token);
+  const getGists = async () => {
+    // octokit.git.list_commits();
+    const fetchedGist = await octokit.request(`GET /gists/${gistId}`, {
+      gist_id: gistId,
+    });
+    console.log("octo got", fetchedGist);
+    return fetchedGist;
+  };
 
   useEffect(() => {
+    getGists().then((result) => {
+      console.log("Octo got gists files:", result.data.files);
+    });
+
     if (hostType) initiatePwaButton("addBtn");
   }, []);
 
@@ -106,14 +216,15 @@ const Project = ({ onChange = () => {} }: Props) => {
 
   const onSave = async () => {
     if (hostType === "gist") {
-      trySaveGist(gistId, token, fileName, JSON.stringify(items));
-      setHostType("gist");
-      setHasChanges(false);
-      onChange({
-        fileName,
-        hasChanges: false,
-        hostType,
-      });
+      // trySaveGist(gistId, token, fileName, JSON.stringify(items));
+      // setHostType("gist");
+      // setHasChanges(false);
+      // onChange({
+      //   fileName,
+      //   hasChanges: false,
+      //   hostType,
+      // });
+      addCacheToGist();
     } else {
       // from hd - not working on mobile yet boo
       onSaveToFs();
