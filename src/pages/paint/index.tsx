@@ -15,17 +15,23 @@ export function Paint() {
     "currentChick",
     "new"
   );
+  const [chickWidgetPositions, setChickWidgetPositions] = useLocalStorage(
+    "chickWidgetPositions",
+    {}
+  );
+
+  const storeUserInterfaceState = () => {
+    const styles: any = {};
+    [].slice
+      .call(document.getElementsByClassName("chickenpaint-palette"))
+      .forEach((element: any) => {
+        styles[element.getAttribute("class")] = element.style.cssText;
+      });
+
+    console.log("stored styles", styles);
+    setChickWidgetPositions(styles);
+  };
   useEffect(() => {
-    // document.addEventListener("DOMContentLoaded", function (event: any) {
-    //   console.log("LOAD", ChickenPaint);
-    //   new ChickenPaint({
-    //     uiElem: document.getElementById("chickenpaint-parent"),
-    //     // saveUrl: "save.php",
-    //     // postUrl: "complete.php",
-    //     // exitUrl: "index.php",
-    //     // resourcesRoot: "chickenpaint/",
-    //   });
-    // });
     setTimeout(() => {
       chickRef.current = new ChickenPaint({
         uiElem: document.getElementById("chickenpaint-parent"),
@@ -85,10 +91,27 @@ export function Paint() {
             // attempt to load it into chickenpaint from cache
           }
         });
+
+        // restore chick Positions
+        console.log("STYLES LOADED", chickWidgetPositions);
+        Object.entries(chickWidgetPositions).forEach(([key, value]: any) => {
+          //@ts-ignore
+          document.getElementsByClassName(key)[0].style = value;
+          console.log("apply:", document.getElementsByClassName(key)[0]);
+        });
       }, 100);
     }, 100);
+
+    //unmount
+    return () => {};
   }, []);
-  return <div id="chickenpaint-parent" className="flex-1" />;
+  return (
+    <div
+      id="chickenpaint-parent"
+      className="flex-1"
+      onPointerUp={storeUserInterfaceState}
+    />
+  );
 }
 
 export default Paint;
