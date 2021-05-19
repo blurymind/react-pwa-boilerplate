@@ -3,6 +3,7 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 const Gists = require("gists");
 
+export { MySwal as Swal };
 const noGistsSet = () => {
   Swal.fire(
     "Not configured",

@@ -1,5 +1,3 @@
-const { Base64 } = require("js-base64");
-
 export const storeCache = (key: string, dataUri: any) => {
   // Store to cache, then create datauris from its keys
   // use the keys to access the datauris
