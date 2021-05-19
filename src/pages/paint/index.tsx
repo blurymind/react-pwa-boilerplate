@@ -47,7 +47,8 @@ export function Paint() {
             console.log("DATAuri", dataUri);
             chickRef.current = new ChickenPaint({
               uiElem: document.getElementById("chickenpaint-parent"),
-              loadChibiFileURL: dataUri, // <- doesnt seem to like this url
+              loadChibiFileURL:
+                "http://localhost:3000/react-pwa-boilerplate/newfgg.chi", //dataUri, // <- doesnt seem to like this url
               // saveUrl: "save.php",
               // postUrl: "complete.php",
               // exitUrl: "index.php",
@@ -56,6 +57,7 @@ export function Paint() {
             // monogatari.assets("scenes", cachedScenes);
           });
         } else {
+          console.log("NEW FILE");
           chickRef.current = new ChickenPaint({
             uiElem: document.getElementById("chickenpaint-parent"),
             // saveUrl: "save.php",

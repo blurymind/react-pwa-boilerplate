@@ -17,7 +17,7 @@ export const createDataUri = (blob: any, cb: any) => {
     var reader = new FileReader();
     reader.onload = function () {
       var blobAsDataUrl = reader.result;
-      console.log("as data url", blobAsDataUrl);
+      // console.log("as data url", blobAsDataUrl);
       cb(blobAsDataUrl);
     };
     reader.readAsDataURL(recoveredBlob);
@@ -30,7 +30,7 @@ export const getCacheData = (key = "", cb = (p: any) => {}) => {
       console.log("matched", res);
 
       createDataUri(res?.blob(), (result: any) => {
-        console.log("created datauri", result);
+        // console.log("created datauri", result);
         cb(result);
       });
     });
