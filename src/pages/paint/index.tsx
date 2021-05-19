@@ -36,34 +36,29 @@ export function Paint() {
   useEffect(() => {
     setTimeout(() => {
       getCacheKeys((storedFiles: any) => {
-        console.log(currentChick, storedFiles);
-
-        let loadChiOrPngUrl = "";
-        if (storedFiles.includes(currentChick + ".chi")) {
-          // alert("Has been saved");
-          // attempt to load it into chickenpaint from cache
-          console.log("Attempting to load", currentChick + ".chi");
-          getCacheData(currentChick + ".chi", (dataUri: string) => {
-            console.log("DATAuri", dataUri);
+        const fileKey = storedFiles.includes(currentChick + ".chi")
+          ? currentChick + ".chi"
+          : storedFiles.includes(currentChick + ".png")
+          ? currentChick + ".png"
+          : "";
+        console.log(storedFiles, fileKey, currentChick);
+        if (fileKey) {
+          getCacheData(fileKey, (dataUri: string) => {
             chickRef.current = new ChickenPaint({
               uiElem: document.getElementById("chickenpaint-parent"),
-              loadChibiFileURL:
-                "http://localhost:3000/react-pwa-boilerplate/newfgg.chi", //dataUri, // <- doesnt seem to like this url
-              // saveUrl: "save.php",
-              // postUrl: "complete.php",
-              // exitUrl: "index.php",
-              // resourcesRoot: "chickenpaint/",
+              [fileKey.includes(".chi")
+                ? "loadChibiFileUrl"
+                : "loadImageUrl"]: dataUri,
+              canvasWidth: 300,
+              canvasHeight: 200,
             });
             // monogatari.assets("scenes", cachedScenes);
           });
         } else {
-          console.log("NEW FILE");
           chickRef.current = new ChickenPaint({
             uiElem: document.getElementById("chickenpaint-parent"),
-            // saveUrl: "save.php",
-            // postUrl: "complete.php",
-            // exitUrl: "index.php",
-            // resourcesRoot: "chickenpaint/",
+            canvasWidth: 300,
+            canvasHeight: 200,
           });
         }
 
