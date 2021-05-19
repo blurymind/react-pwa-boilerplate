@@ -8,6 +8,7 @@ import {
 import useLocalStorage from "@hooks/use-local-storage";
 
 const ChickenPaint = require("chickenpaint");
+const { save } = require("chickenpaint/js/engine/CPChibiFile.js");
 
 export function Paint() {
   const chickRef: any = useRef(null);
@@ -74,6 +75,12 @@ export function Paint() {
               ".png",
             blobUrl
           );
+
+          console.log(chickRef.current?.getArtwork());
+          // save chi file
+          save(chickRef.current?.getArtwork()).then((chibiResult: any) => {
+            console.log("Layered:", chibiResult);
+          });
         };
         document
           .getElementsByClassName(
